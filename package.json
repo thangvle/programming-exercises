@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "test": "bun test exercises",
-    "test:watch": "bun test --watch exercises"
+    "test:watch": "bun test --watch exercises",
+    "test:drills": "bun test exercises/drills",
+    "test:drills:watch": "bun test --watch exercises/drills"
   },
   "devDependencies": {
     "@types/bun": "^1.3.10"
