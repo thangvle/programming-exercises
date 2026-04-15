@@ -10,5 +10,9 @@
  *   anyDivisibleBy([1, 2, 3], 4)    → false
  */
 export function anyDivisibleBy(nums: number[], n: number): boolean {
+<<<<<<< HEAD
   if (nums.some((i) => i % n === 0)) return true;
+=======
+  throw new Error("Not implemented");
+>>>>>>> b831d0f6cf15394c5ca1ab579c252339804c412f
 }

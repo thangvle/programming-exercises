@@ -8,6 +8,7 @@
  * longest(["a", "bb"]) → "bb"
  */
 export function longest(strings: string[]): string {
+<<<<<<< HEAD
   if (strings.length === 0) return strings[0] as string;
 
   // TODO: go through the list, and compare the length
@@ -16,4 +17,7 @@ export function longest(strings: string[]): string {
     if (curr.length > acc.length) return curr;
     else return acc;
   });
+=======
+  throw new Error("Not implemented");
+>>>>>>> b831d0f6cf15394c5ca1ab579c252339804c412f
 }
