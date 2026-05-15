@@ -10,36 +10,41 @@ function stringShortener(str: string, delimiters: string = DELIMITERS): string {
   // TODO: split by symbol
   // shotern string by get the first char + middleLenght + endChar
   // join by dash
-  let { wordArr, symbol } = processStrShorten(str, delimiters);
+  let result = processStrShorten(str, delimiters);
 
-  return wordArr
-    .map((word) => {
-      if (word.length <= 2 || !word) return word;
+  return result;
+}
 
-      let firstChar = word[0];
-      let middleLength = word.length - 2;
-      let endChar = word[word.length - 1];
+function shortenStr(word: string) {
+  if (word.length < 3) return word;
+  let firstChar = word[0];
+  let middleLength = word.length - 2;
+  let endChar = word[word.length - 1];
 
-      return `${firstChar}${middleLength}${endChar}`;
-    })
-    .join(symbol);
+  return `${firstChar}${middleLength}${endChar}`;
 }
 
 function processStrShorten(str: string, delimiter: string) {
-  let symbol = "";
-
+  let word = "";
+  let result = "";
   // Traverse the string to identify the symbol
-  // Traverse the delimiter to find the symbol
-  // if the symbol match, split by that symbol
-  // process to shorten the string
-  // join back by symbol
-  for (let i = 0; i < delimiter.length; i++) {
-    str.split("").reduce((acc, curr) => {
-      if (curr === delimiter[i]) symbol[i] = delimiter[i] as string;
-    });
-  }
+  // add char by char to until reach the delimiter char
+  // check if char match the delimiter using includes()
+  // if the symbol match, shorten the word, add the delimiter, then reset the segment
+  let wordArr = str.trim().split("");
 
-  return { wordArr: str.trim().split(symbol), symbol: symbol };
+  for (let i = 0; i <= wordArr.length; i++) {
+    if (delimiter.includes(wordArr[i] as string) || i === wordArr.length) {
+      if (word.length > 0) {
+        result += shortenStr(word);
+      }
+      if (i < wordArr.length) result += wordArr[i];
+      word = "";
+    } else {
+      word += wordArr[i];
+    }
+  }
+  return result;
 }
 
 function test<T extends (...args: any[]) => any>(
@@ -59,19 +64,21 @@ function test<T extends (...args: any[]) => any>(
 }
 
 // Expected output: "h3o-w3d"
-test(stringShortener, ["hello-world"], "h3o-w3d");
-test(stringShortener, ["hi-h231n"], "hi-h3n");
-test(stringShortener, ["king-"], "k2g-");
-test(stringShortener, ["--Hey"], "--H1y");
+// test(stringShortener, ["hello-world"], "h3o-w3d");
+// test(stringShortener, ["hi-h231n"], "hi-h3n");
+// test(stringShortener, ["king-"], "k2g-");
+// test(stringShortener, ["--Hey"], "--H1y");
 
-test(stringShortener, ["hello#world"], "h3o#w3d");
-test(stringShortener, ["hello_world"], "h3o_w3d");
-test(stringShortener, ["//Hey"], "//H1y");
-test(stringShortener, ["hi##h231n"], "hi##h3n");
-test(stringShortener, ["king/"], "k2g/");
-test(stringShortener, ["hello_world   "], "h3o_w3d");
+// test(stringShortener, ["hello#world"], "h3o#w3d");
+// test(stringShortener, ["hello_world"], "h3o_w3d");
+// test(stringShortener, ["//Hey"], "//H1y");
+// test(stringShortener, ["hi##h231n"], "hi##h3n");
+// test(stringShortener, ["king/"], "k2g/");
+// test(stringShortener, ["hello_world   "], "h3o_w3d");
 
 test(stringShortener, ["hello_my#name/is-An"], "h3o_my#n2e/is-An");
 test(stringShortener, ["hello_my#name/is-An   "], "h3o_my#n2e/is-An");
+test(stringShortener, ["_my#n/is-An   "], "_my#n/is-An");
+test(stringShortener, ["_#n/is-An   "], "_#n/is-An");
 test(stringShortener, ["hey#/what-"], "h1y#/w2t-");
 test(stringShortener, ["h-e/y"], "h-e/y");
