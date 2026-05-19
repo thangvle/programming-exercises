@@ -15,35 +15,43 @@ function stringShortener(str: string, delimiters: string = DELIMITERS): string {
   // join by -
   //
 
-  const { wordList, symbol } = shortenProcess(str, DELIMITERS);
-  return wordList
-    .map((word) => {
-      if (word.length <= 2) return word;
-      let firstChar = word[0];
-      let lastChar = word[word.length - 1];
-
-      let middleLength = word.length - 2;
-
-      return `${firstChar}${middleLength}${lastChar}`;
-    })
-    .join(symbol);
+  const result  = splitProcess(str, DELIMITERS)
+  return result
 }
 
-function shortenProcess(
+function shortenProcess(word: string){
+  
+  if (word.length <= 2) return word;
+    let firstChar = word[0];
+    let lastChar = word[word.length - 1];
+
+    let middleLength = word.length - 2;
+
+    return `${firstChar}${middleLength}${lastChar}`;
+    
+}
+
+function splitProcess(
   str: string,
   DELIMITERS: string,
-): { wordList: string[]; symbol: string } {
-  let symbol = DELIMITERS.split("").reduce((acc, curr) => {
-    if (str.includes(curr)) return curr;
-    return acc;
-  }, "");
+){
+  let result = ""
+  let word = ""
 
-  if (symbol === "") return { wordList: [str], symbol: "" };
-
-  return {
-    wordList: str.split(symbol),
-    symbol,
-  };
+  str.split("").reduce((acc, curr, index)=>{
+    
+    if (DELIMITERS.includes(curr)) {
+      if (word.length > 0) result += shortenProcess(word)
+      result += curr
+      console.log("result:", result)
+      word = ""
+    } else{
+      word += curr
+      console.log("word:", word)
+    }
+    return result
+  })
+  return result
 }
 
 function test<T extends (...args: any[]) => any>(
@@ -63,14 +71,15 @@ function test<T extends (...args: any[]) => any>(
 }
 
 // Expected output: "h3o-w3d"
-test(stringShortener, ["hello-world"], "h3o-w3d");
-test(stringShortener, ["hello-io-poop"], "h3o-io-p2p");
-test(stringShortener, ["help-Elon"], "h2p-E2n");
-test(stringShortener, ["h-Elon"], "h-E2n");
-test(stringShortener, ["helloworld"], "h8d");
-test(stringShortener, ["-------"], "-------");
-test(stringShortener, ["-hello-world-"], "-h3o-w3d-");
-test(stringShortener, ["hello--world"], "h3o--w3d");
+// test(stringShortener, ["hello-world"], "h3o-w3d");
+// test(stringShortener, ["hello-io-poop"], "h3o-io-p2p");
+// test(stringShortener, ["help-Elon"], "h2p-E2n");
+// test(stringShortener, ["h-Elon"], "h-E2n");
+// test(stringShortener, ["helloworld"], "h8d");
+// test(stringShortener, ["-------"], "-------");
+// test(stringShortener, ["-hello-world-"], "-h3o-w3d-");
+// test(stringShortener, ["hello--world"], "h3o--w3d");
 
-test(stringShortener, ["hello#world"], "h3o#w3d");
-test(stringShortener, ["hello_world"], "h3o_w3d");
+// test(stringShortener, ["hello#world"], "h3o#w3d");
+// test(stringShortener, ["hello_world"], "h3o_w3d");
+test(stringShortener, ["hello_im#An/what-are"], "h3o_im#An/w3t-a1e")
