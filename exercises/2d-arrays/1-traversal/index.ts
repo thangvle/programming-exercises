@@ -15,7 +15,9 @@ export function traverseColumnByColumn(grid: number[][]): number[] {
   let result: number[] = [];
 
   for (let row= 0; row < grid.length; row++){
-    for(let col = 0; col < grid[row]?.length; col++){
+    let currentRow = grid[row]
+    if (!currentRow) continue
+    for(let col = 0; col < currentRow.length; col++){
       result.push(grid[col][row])
       console.log(result)
     }
